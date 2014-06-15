@@ -10,9 +10,16 @@ func main() {
 	size := uint64(30)
 	rule := goca.ECARule(90)
 	ca := goca.NewECA(rule, size)
-	sim := goca.NewSimulator(ca, goca.InitFunc(func(ca goca.CA) {
-		ca.Pattern().Set(goca.State(1), int64(size/2))
-	}), &goca.Text1DWriter{os.Stdout})
+	writer := goca.Text1DWriter{os.Stdout}
+	sim := &goca.Simulator{
+		CA: ca,
+		Initilizer: goca.HandlerFunc(func(step int, ca goca.CA) error {
+			ca.Pattern().Set(goca.State(1), int64(size/2))
+			writer.Write(ca.Pattern())
+			return nil
+		}),
+		StepAfter: &goca.PatternWriterHandler{writer},
+	}
 
 	sim.Run(20)
 }

@@ -1,55 +1,34 @@
 package goca
 
-import (
-	"fmt"
-	"io"
-	"os"
-)
-
 type Simulator struct {
 	CA         CA
-	Initilizer Initilizer
-	Logger     ProgressLogger
-	Writer     PatternWriter
+	Initilizer Handler
+	StepBefore Handler
+	StepAfter  Handler
+	Terminator Handler
 }
 
-func NewSimulator(ca CA, ini Initilizer, w PatternWriter) *Simulator {
-	return &Simulator{
-		CA:         ca,
-		Initilizer: ini,
-		Logger:     &SimpleLogger{os.Stdout},
-		Writer:     w,
-	}
+type Handler interface {
+	Handle(step int, ca CA) error
 }
 
-type ProgressLogger interface {
-	Progress(step int, ca CA)
-}
+type HandlerFunc func(step int, ca CA) error
 
-type SimpleLogger struct {
-	Writer io.Writer
-}
-
-func (sl *SimpleLogger) Progress(step int, ca CA) {
-	fmt.Fprintln(sl.Writer, "Step:", step)
-}
-
-type Initilizer interface {
-	Initilize(ca CA)
-}
-
-type InitFunc func(ca CA)
-
-func (f InitFunc) Initilize(ca CA) {
-	f(ca)
+func (f HandlerFunc) Handle(step int, ca CA) error {
+	return f(step, ca)
 }
 
 func (s *Simulator) Run(step int) {
-	s.Initilizer.Initilize(s.CA)
-	s.Writer.Write(s.CA.Pattern())
+	if s.Initilizer != nil {
+		s.Initilizer.Handle(0, s.CA)
+	}
 	for i := 1; i <= step; i++ {
-		s.Logger.Progress(i, s.CA)
+		if s.StepBefore != nil {
+			s.StepBefore.Handle(i, s.CA)
+		}
 		s.CA.Transit()
-		s.Writer.Write(s.CA.Pattern())
+		if s.StepAfter != nil {
+			s.StepAfter.Handle(i, s.CA)
+		}
 	}
 }

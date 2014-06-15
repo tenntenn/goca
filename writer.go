@@ -9,6 +9,14 @@ type PatternWriter interface {
 	Write(p Pattern) error
 }
 
+type PatternWriterHandler struct {
+	PatternWriter
+}
+
+func (pw *PatternWriterHandler) Handle(step int, ca CA) error {
+	return pw.Write(ca.Pattern())
+}
+
 type Text1DWriter struct {
 	Writer io.Writer
 }
