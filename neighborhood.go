@@ -1,9 +1,5 @@
 package goca
 
-import (
-	"fmt"
-)
-
 // getting neighborhood algorithm
 type Neighborhood interface {
 	// get neighbors pattern with index i
@@ -19,7 +15,7 @@ type MooreNeighborhood uint64
 // if topology of given pattern is not SquareLattice,
 // NotSuportTopologyError occured.
 func (m MooreNeighborhood) Get(p Pattern, index uint64) (Pattern, error) {
-	topology, ok := p.Toplogy.(SquareLattice)
+	topology, ok := p.Topology.(SquareLattice)
 	if !ok {
 		return EmptyPattern, NotSuportTopologyError
 	}

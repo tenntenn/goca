@@ -1,5 +1,9 @@
 package goca
 
+import (
+	"fmt"
+)
+
 // XYZ axis
 type Axis int
 
