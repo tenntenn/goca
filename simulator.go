@@ -46,6 +46,7 @@ func (f InitFunc) Initilize(ca CA) {
 
 func (s *Simulator) Run(step int) {
 	s.Initilizer.Initilize(s.CA)
+	s.Writer.Write(s.CA.Pattern())
 	for i := 1; i <= step; i++ {
 		s.Logger.Progress(i, s.CA)
 		s.CA.Transit()
