@@ -9,8 +9,10 @@ type Pattern struct {
 	Toplogy Topology
 }
 
-// Empty pattern
-var EmptyPattern = Pattern{nil, nil}
+var (
+	// Empty pattern
+	EmptyPattern = Pattern{nil, nil}
+)
 
 // create pattern from toplogy
 func NewPattern(t Topology) Pattern {
