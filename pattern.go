@@ -9,6 +9,7 @@ type Pattern struct {
 	Toplogy Topology
 }
 
+// Empty pattern
 var EmptyPattern = Pattern{nil, nil}
 
 // create pattern from toplogy

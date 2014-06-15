@@ -5,6 +5,7 @@ import (
 )
 
 var (
+	// Neighborhood does not support a topology
 	NotSuportTopologyError = fmt.Errorf("NotSuportTopologyError")
 )
 

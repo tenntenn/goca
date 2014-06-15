@@ -74,6 +74,7 @@ func (sl SquareLattice) CycleIndex(i int64) uint64 {
 	return sl.Cycle(i, sl.NumCells())
 }
 
+// round coordinate by boundary condition
 func (sl SquareLattice) Cycle(coordinate int64, size uint64) uint64 {
 	s := int64(size)
 	if coordinate < 0 {
