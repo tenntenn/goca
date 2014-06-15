@@ -22,8 +22,8 @@ type MooreNeighborhood uint64
 // get neighbors of SquareLattice pattern.
 // if topology of given pattern is not SquareLattice,
 // NotSuportTopologyError occured.
-func (m MooreNeighborhood) Get(p Pattern, i uint64) (Pattern, error) {
-	topology, ok := p.Topology().(SquareLattice)
+func (m MooreNeighborhood) Get(p Pattern, index uint64) (Pattern, error) {
+	topology, ok := p.Toplogy.(SquareLattice)
 	if !ok {
 		return EmptyPattern, NotSuportTopologyError
 	}
@@ -35,14 +35,14 @@ func (m MooreNeighborhood) Get(p Pattern, i uint64) (Pattern, error) {
 
 	neighbors := NewPattern(sl)
 
-	coordinates := topology.Coordinates(i)
+	coordinates := topology.Coordinates(index)
 	r := int64(m)
 	c := make([]int64, len(sl))
 	for i := -r; i < r; i++ {
 		for j, _ := range coordinates {
 			c[j] = int64(coordinates[j]) + i
 		}
-		neighbors.Set(p.GetByIndex(i), c)
+		neighbors.Set(p.GetByIndex(index), c...)
 	}
 
 	return neighbors, nil

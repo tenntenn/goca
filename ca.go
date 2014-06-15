@@ -8,7 +8,7 @@ type Rule interface {
 // type of a cellular automata
 type CA interface {
 	Pattern() Pattern
-	Transit()
+	Transit() error
 	Rule() Rule
 	Topology() Topology
 	Neighborhood() Neighborhood
@@ -40,12 +40,16 @@ func (ca *SimpleCA) Pattern() Pattern {
 }
 
 // transition next states
-func (ca *SimpleCA) Transit() {
+func (ca *SimpleCA) Transit() error {
 	for i := uint64(0); i < ca.topology.NumCells(); i++ {
-		neighbors := ca.neighborhood.Get(ca.current, i)
-		ca.next.SetByIndex(ca.rule.Apply(neighbors), i)
+		neighbors, err := ca.neighborhood.Get(ca.current, i)
+		if err != nil {
+			return err
+		}
+		ca.next.SetAtIndex(ca.rule.Apply(neighbors), i)
 	}
 	ca.current, ca.next = ca.next, ca.current
+	return nil
 }
 
 // return transition rule of ca

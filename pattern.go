@@ -12,31 +12,31 @@ type Pattern struct {
 var EmptyPattern = Pattern{nil, nil}
 
 // create pattern from toplogy
-func NewPattern(toplogy Topology) Pattern {
+func NewPattern(t Topology) Pattern {
 	return Pattern{
-		states:  make([]State, toplogy.Length()),
-		toplogy: toplogy,
+		States:  make([]State, t.NumCells()),
+		Toplogy: t,
 	}
 }
 
 // get state with given coordinates c
 func (p Pattern) Get(c ...int64) State {
-	return p.GetByIndex(p.toplogy.Index(coordinates))
+	return p.GetByIndex(p.Toplogy.Index(c...))
 }
 
 // get state with given index i
 func (p Pattern) GetByIndex(i uint64) State {
-	index := p.toplogy.CycleIndex(i)
-	return p.states[index]
+	index := p.Toplogy.CycleIndex(int64(i))
+	return p.States[index]
 }
 
 // set state with given coordinates c
 func (p Pattern) Set(s State, c ...int64) {
-	p.SetByIndex(state, p.toplogy.Index(coordinates))
+	p.SetAtIndex(s, p.Toplogy.Index(c...))
 }
 
 // set state with given index i
 func (p Pattern) SetAtIndex(s State, i uint64) {
-	index := p.toplogy.CycleIndex(i)
-	p.states[index] = state
+	index := p.Toplogy.CycleIndex(int64(i))
+	p.States[index] = s
 }
