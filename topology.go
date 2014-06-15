@@ -12,6 +12,11 @@ const (
 	Z
 )
 
+var (
+	// Neighborhood or rule does not support a topology
+	NotSuportTopologyError = fmt.Errorf("NotSuportTopologyError")
+)
+
 // topology of cellular automata
 // such as square lattice
 type Topology interface {

@@ -4,11 +4,6 @@ import (
 	"fmt"
 )
 
-var (
-	// Neighborhood does not support a topology
-	NotSuportTopologyError = fmt.Errorf("NotSuportTopologyError")
-)
-
 // getting neighborhood algorithm
 type Neighborhood interface {
 	// get neighbors pattern with index i
