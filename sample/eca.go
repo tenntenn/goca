@@ -18,7 +18,7 @@ func main() {
 			writer.Write(ca.Pattern())
 			return nil
 		}),
-		StepAfter: &goca.PatternWriterHandler{writer},
+		StepAfter: &goca.WriterHandler{writer},
 	}
 
 	sim.Run(20)
