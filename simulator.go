@@ -38,6 +38,12 @@ type Initilizer interface {
 	Initilize(ca CA)
 }
 
+type InitFunc func(ca CA)
+
+func (f InitFunc) Initilize(ca CA) {
+	f(ca)
+}
+
 func (s *Simulator) Run(step int) {
 	s.Initilizer.Initilize(s.CA)
 	for i := 1; i <= step; i++ {
