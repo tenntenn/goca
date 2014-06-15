@@ -2,7 +2,13 @@ package goca
 
 // type of transition rule of cellular automaton
 type Rule interface {
-	Apply(pattern Pattern) State
+	Apply(p Pattern) State
+}
+
+type RuleFunc func(p Pattern) State
+
+func (f RuleFunc) Apply(p Pattern) State {
+	return f(p)
 }
 
 // type of a cellular automata
