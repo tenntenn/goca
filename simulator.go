@@ -6,6 +6,14 @@ type Simulator struct {
 	StepBefore Handler
 	StepAfter  Handler
 	Terminator Handler
+	Context    map[string]interface{}
+}
+
+func NewSimulator(ca CA) *Simulator {
+	return &Simulator{
+		CA:      ca,
+		Context: make(map[string]interface{}),
+	}
 }
 
 type Handler interface {
@@ -30,5 +38,9 @@ func (s *Simulator) Run(step int) {
 		if s.StepAfter != nil {
 			s.StepAfter.Handle(i, s.CA)
 		}
+	}
+
+	if s.Terminator != nil {
+		s.Terminator.Handle(step, s.CA)
 	}
 }

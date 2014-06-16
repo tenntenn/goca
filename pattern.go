@@ -43,3 +43,14 @@ func (p Pattern) SetAtIndex(s State, i uint64) {
 	index := p.Topology.CycleIndex(int64(i))
 	p.States[index] = s
 }
+
+// Copy pattern
+// It makes new states slice, but toplogy is just copied.
+func (p Pattern) Copy() Pattern {
+	states := make([]State, len(p.States))
+	copy(states, p.States)
+	return Pattern{
+		States:   states,
+		Topology: p.Topology,
+	}
+}
